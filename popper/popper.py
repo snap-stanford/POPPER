@@ -41,27 +41,33 @@ class Popper:
             os.makedirs(data_path)
 
         self.data_path = data_path
-        if not os.path.exists(os.path.join(data_path, 'bio_database')):
-            print('It will take a few minutes to download the data for the first time...')
-            self.download_all_data()
-        else:
-            print('Data already exists, loading...')
-
         if loader_type == 'bio':
+            if not os.path.exists(os.path.join(data_path, 'bio_database')):
+                print('It will take a few minutes to download the data for the first time...')
+                self.download_all_data()
+            else:
+                print('Bio data already exists, loading...')
             self.data_loader = ExperimentalDataLoader(
                 data_path=data_path,
                 table_dict_selection='all_bio',
                 data_sampling=data_sampling
             )
         elif loader_type == 'bio_selected':
+            if not os.path.exists(os.path.join(data_path, 'bio_database')):
+                print('It will take a few minutes to download the data for the first time...')
+                self.download_all_data()
+            else:
+                print('Bio data already exists, loading...')
             self.data_loader = ExperimentalDataLoader(
                 data_path=data_path,
                 table_dict_selection='default',
                 data_sampling=data_sampling
             )
         elif loader_type == 'custom':
+            print('Loading custom data...')
             self.data_loader = CustomDataLoader(data_folder=data_path)
         elif loader_type == 'discovery_bench':
+            print('Loading discovery bench data...')
             if metadata is None:
                 raise ValueError("Metadata must be provided for DiscoveryBenchDataLoader")
             self.data_loader = DiscoveryBenchDataLoader(data_path=data_path, metadata=metadata)
